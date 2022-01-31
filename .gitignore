@@ -7,4 +7,8 @@
 /public/bundles/
 /var/
 /vendor/
+/docker/
+/.github/
+/.idea/
+/.ssh/
 ###< symfony/framework-bundle ###
