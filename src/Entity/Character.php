@@ -32,7 +32,7 @@ class Character
     private $life = '10';
 
     #[ORM\Column(type: 'string', length: 128, nullable: true)]
-    private $image;
+    private $image = 'http://image.noelshack.com/fichiers/2022/05/1/1643625108-9cd137a7-473d-440c-b730-fcd006c3f417.jpeg';
 
     public function getId(): ?int
     {
