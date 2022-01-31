@@ -11,25 +11,25 @@ class Character
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private $id = 1;
 
     #[ORM\Column(type: 'string', length: 16)]
-    private $name;
+    private $name = 'Curambar';
 
     #[ORM\Column(type: 'string', length: 64)]
-    private $surname;
+    private $surname = 'Maître du destin';
 
     #[ORM\Column(type: 'string', length: 16, nullable: true)]
-    private $caste;
+    private $caste = 'Erudit';
 
     #[ORM\Column(type: 'string', length: 16, nullable: true)]
-    private $knowledge;
+    private $knowledge = 'Lettres';
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $intelligence;
+    private $intelligence = '140';
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $life;
+    private $life = '10';
 
     #[ORM\Column(type: 'string', length: 128, nullable: true)]
     private $image;
