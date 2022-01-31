@@ -8,7 +8,7 @@
 /var/
 /vendor/
 /docker/
-.github
-.idea
-.ssh
+/.github
+/.idea
+/.ssh
 ###< symfony/framework-bundle ###
