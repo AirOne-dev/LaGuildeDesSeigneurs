@@ -7,12 +7,9 @@
 /public/bundles/
 /var/
 /vendor/
-.idea/*
-.ssh/*
+###< symfony/framework-bundle ###
+/.ssh/
+/.github/
+/.idea/
 .DS_Store
 .editorconfig
-LICENSE
-.github
-.idea
-.ssh
-###< symfony/framework-bundle ###

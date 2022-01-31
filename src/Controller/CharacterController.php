@@ -22,8 +22,6 @@ class CharacterController extends AbstractController
     public function display(): Response
     {
         $character = new Character();
-        dump($character);
-        echo '<image width="400" src="'.$character->getImage().'">';
         return $this->json([
             $character->toArray()
         ]);
