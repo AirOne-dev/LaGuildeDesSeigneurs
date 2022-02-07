@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CharacterController extends AbstractController
 {
-    #[Route('/', name: 'index')]
+    #[Route('/', name: 'index', methods: ['GET', 'HEAD'])]
     public function index(): Response
     {
         return $this->json([
@@ -19,7 +19,7 @@ class CharacterController extends AbstractController
         ]);
     }
 
-    #[Route('/character/display', name: 'character_display')]
+    #[Route('/character/display', name: 'character_display', methods: ['GET', 'HEAD'])]
     public function display(): Response
     {
         $character = new Character();
