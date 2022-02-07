@@ -11,34 +11,37 @@ class Character
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id = 1;
+    private $id;
 
     #[ORM\Column(type: 'string', length: 16)]
-    private $name = 'Curambar';
+    private $name;
 
     #[ORM\Column(type: 'string', length: 64)]
-    private $surname = 'Maître du destin';
+    private $surname;
 
     #[ORM\Column(type: 'string', length: 16, nullable: true)]
-    private $caste = 'Erudit';
+    private $caste;
 
     #[ORM\Column(type: 'string', length: 16, nullable: true)]
-    private $knowledge = 'Lettres';
+    private $knowledge;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $intelligence = '140';
+    private $intelligence;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $life = '10';
+    private $life;
 
     #[ORM\Column(type: 'string', length: 128, nullable: true)]
-    private $image = 'http://image.noelshack.com/fichiers/2022/05/1/1643625108-9cd137a7-473d-440c-b730-fcd006c3f417.jpeg';
+    private $image;
 
     #[ORM\Column(type: 'string', length: 16)]
     private $kind;
 
     #[ORM\Column(type: 'datetime')]
     private $creation;
+
+    #[ORM\Column(type: 'string', length: 40)]
+    private $identifier;
 
     public function getId(): ?int
     {
@@ -154,6 +157,18 @@ class Character
     public function setCreation(\DateTimeInterface $creation): self
     {
         $this->creation = $creation;
+
+        return $this;
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(string $identifier): self
+    {
+        $this->identifier = $identifier;
 
         return $this;
     }

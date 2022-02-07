@@ -6,8 +6,10 @@
 /.env.test
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/public/images
 /var/
 /vendor/
+/migrations/*
 ###< symfony/framework-bundle ###
 /.ssh/
 /.github/

@@ -19,4 +19,12 @@ class CharacterControllerTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'), $response->headers);
     }
+
+    public function testCreate(): void
+    {
+        $client = static::createClient();
+        $client->request('POST', '/character/create');
+
+        $this->assertJsonResponse($client->getResponse());
+    }
 }
