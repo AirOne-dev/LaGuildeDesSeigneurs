@@ -3,15 +3,18 @@
 namespace App\Service;
 
 use App\Entity\Character;
+use App\Repository\CharacterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CharacterService implements CharacterServiceInterface
 {
     private $em;
+    private $characterRepository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, CharacterRepository $cr)
     {
         $this->em = $em;
+        $this->characterRepository = $cr;
     }
 
     public function create() {
@@ -32,5 +35,16 @@ class CharacterService implements CharacterServiceInterface
         $this->em->flush();
 
         return $character;
+    }
+
+    public function getAll()
+    {
+       $charactersFinal = [];
+       $characters = $this->characterRepository->findAll();
+       foreach ($characters as $character) {
+           $charactersFinal[] = $character->toArray();
+       }
+
+       return $charactersFinal;
     }
 }

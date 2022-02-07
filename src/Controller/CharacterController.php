@@ -17,19 +17,10 @@ class CharacterController extends AbstractController
         $this->characterService = $characterService;
     }
 
-    #[Route('/', name: 'index', methods: ['GET', 'HEAD'])]
-    public function index(): Response
-    {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/CharacterController.php',
-        ]);
-    }
-
     #[Route('/character/display/{identifier}', name: 'character_display', requirements: ['identifier' => '^([a-z0-9]{40})$'], methods: ['GET', 'HEAD'])]
     public function display(Character $character): Response
     {
-        $this->denyAccessUnlessGranted('CharacterDisplay', $character);
+        $this->denyAccessUnlessGranted('characterDisplay', $character);
         return new JsonResponse($character->toArray());
     }
 
@@ -37,7 +28,21 @@ class CharacterController extends AbstractController
     public function create(): Response
     {
         $character = $this->characterService->create();
-        $this->denyAccessUnlessGranted('CharacterCreate', $character);
+        $this->denyAccessUnlessGranted('characterCreate', $character);
         return new JsonResponse($character->toArray());
+    }
+
+    #[Route('/character', name: 'character_redirect_index', methods: ['GET', 'HEAD'])]
+    public function redirectToIndex(): Response
+    {
+        return $this->redirectToRoute('character_index');
+    }
+
+    #[Route('/character/index', name: 'character_index', methods: ['GET', 'HEAD'])]
+    public function index(): Response
+    {
+        $this->denyAccessUnlessGranted('characterIndex', null);
+        $characters = $this->characterService->getAll();
+        return new JsonResponse($characters);
     }
 }
