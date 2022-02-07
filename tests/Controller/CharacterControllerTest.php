@@ -48,6 +48,12 @@ class CharacterControllerTest extends WebTestCase
         $this->assertError404($this->client->getResponse()->getStatusCode());
     }
 
+    public function testInexistingIdentifier(): void
+    {
+        $this->client->request('GET', '/character/display/8032d86185bdf48faf161ed2f88ec0ced2dae056error');
+        $this->assertError404($this->client->getResponse()->getStatusCode());
+    }
+
     public function assertJsonResponse($response): void
     {
         $this->assertEquals(200, $response->getStatusCode());
