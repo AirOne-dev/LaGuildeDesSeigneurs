@@ -2,45 +2,60 @@
 
 namespace App\Tests;
 
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CharacterControllerTest extends WebTestCase
 {
-    public function testDisplay(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/character/display/8032d86185bdf48faf161ed2f88ec0ced2dae056');
+    private KernelBrowser $client;
 
-        $this->assertJsonResponse($client->getResponse());
+    public function setUp(): void
+    {
+        $this->client = static::createClient();
     }
 
     public function testCreate(): void
     {
-        $client = static::createClient();
-        $client->request('POST', '/character/create');
+        $this->client->request('POST', '/character/create');
 
-        $this->assertJsonResponse($client->getResponse());
+        $this->assertJsonResponse($this->client->getResponse());
+    }
+
+    public function testDisplay(): void
+    {
+        $this->client->request('GET', '/character/display/8032d86185bdf48faf161ed2f88ec0ced2dae056');
+
+        $this->assertJsonResponse($this->client->getResponse());
     }
 
     public function testRedirectIndex(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/character');
+        $this->client->request('GET', '/character');
 
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
     }
 
     public function testIndex(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/character/index');
+        $this->client->request('GET', '/character/index');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testBadIdentifier(): void
+    {
+        $this->client->request('GET', '/character/display/basIdentifier');
+        $this->assertError404($this->client->getResponse()->getStatusCode());
     }
 
     public function assertJsonResponse($response): void
     {
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'), $response->headers);
+    }
+
+    public function assertError404($statusCode): void
+    {
+        $this->assertEquals(404, $statusCode);
     }
 }
