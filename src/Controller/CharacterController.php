@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CharacterController extends AbstractController
 {
-    #[Route('/character', name: 'character')]
+    #[Route('/', name: 'index')]
     public function index(): Response
     {
         return $this->json([
