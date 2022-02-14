@@ -29,7 +29,8 @@ class CharacterService implements CharacterServiceInterface
             ->setLife(10)
             ->setImage('/images/Curambar.jpeg')
             ->setCreation(new \DateTime())
-            ->setIdentifier(hash('sha1', uniqid()));
+            ->setIdentifier(hash('sha1', uniqid()))
+            ->setModification(new \DateTime());
 
         $this->em->persist($character);
         $this->em->flush();
@@ -57,7 +58,8 @@ class CharacterService implements CharacterServiceInterface
             ->setKnowledge('Lettres')
             ->setIntelligence(140)
             ->setLife(10)
-            ->setImage('/images/Curambar.jpeg');
+            ->setImage('/images/Curambar.jpeg')
+            ->setModification(new \DateTime());
 
         $this->em->persist($character);
         $this->em->flush();

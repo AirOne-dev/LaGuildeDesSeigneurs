@@ -43,7 +43,7 @@ class Character
     #[ORM\Column(type: 'string', length: 40)]
     private $identifier;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime')]
     private $modification;
 
     public function getId(): ?int
