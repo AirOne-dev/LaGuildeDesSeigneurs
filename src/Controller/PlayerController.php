@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Player;
+use App\Service\PlayerServiceInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+class PlayerController extends AbstractController
+{
+    private PlayerServiceInterface $playerService;
+
+    public function __construct(PlayerServiceInterface $playerService) {
+        $this->playerService = $playerService;
+    }
+
+    #[Route('/player/display/{id}', name: 'player_display', requirements: ['id' => '^([0-9])$'], methods: ['GET', 'HEAD'])]
+    public function display(Player $player): Response
+    {
+        $this->denyAccessUnlessGranted('playerDisplay', $player);
+        return new JsonResponse($player->toArray());
+    }
+
+    #[Route('/player/create', name: 'player_create', methods: ['POST', 'HEAD'])]
+    public function create(): Response
+    {
+        $player = $this->playerService->create();
+        $this->denyAccessUnlessGranted('playerCreate', $player);
+        return new JsonResponse($player->toArray());
+    }
+
+    #[Route('/player', name: 'player_redirect_index', methods: ['GET', 'HEAD'])]
+    public function redirectToIndex(): Response
+    {
+        return $this->redirectToRoute('player_index');
+    }
+
+    #[Route('/player/index', name: 'player_index', methods: ['GET', 'HEAD'])]
+    public function index(): Response
+    {
+        $this->denyAccessUnlessGranted('playerDisplay', null);
+        $players = $this->playerService->getAll();
+        return new JsonResponse($players);
+    }
+
+    #[Route('/player/update/{id}', name: 'player_update', requirements: ['id' => '^([0-9])$'], methods: ['PUT', 'HEAD'])]
+    public function modify(Player $player): Response
+    {
+        $this->denyAccessUnlessGranted('playerUpdate', $player);
+        $player = $this->playerService->update($player);
+        return new JsonResponse($player->toArray());
+    }
+
+    #[Route('/player/delete/{identifier}', name: 'player_delete', requirements: ['identifier' => '^([a-z0-9]{40})$'], methods: ['DELETE', 'HEAD'])]
+    public function delete(Player $player): Response
+    {
+        $this->denyAccessUnlessGranted('playerDelete', $player);
+        $response = $this->playerService->delete($player);
+        return new JsonResponse(array('delete' => $response));
+    }
+}
