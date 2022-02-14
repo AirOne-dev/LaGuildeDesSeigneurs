@@ -48,8 +48,7 @@ class CharacterService implements CharacterServiceInterface
        return $charactersFinal;
     }
 
-    public function modify() {
-        $character = new Character();
+    public function modify(Character $character) {
         $character
             ->setKind('Seigneur')
             ->setName('Curambar')
@@ -64,5 +63,11 @@ class CharacterService implements CharacterServiceInterface
         $this->em->flush();
 
         return $character;
+    }
+
+    public function delete(Character $character) {
+        $this->em->remove($character);
+        $this->em->flush();
+        return true;
     }
 }
