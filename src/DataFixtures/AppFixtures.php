@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Character;
+use App\Entity\Player;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -25,6 +26,18 @@ class AppFixtures extends Fixture
                 ->setIdentifier(hash('sha1', uniqid()))
                 ->setCreation(new DateTime());
             $manager->persist($character);
+        }
+        $manager->flush();
+
+        for ($i = 0; $i < 10; $i++)
+        {
+            $player = new Player();
+            $player
+                ->setFirstname('Maë' . $i)
+                ->setLastname('MARTIN' . $i)
+                ->setEmail('mae311010@gmail.com')
+                ->setMirian(mt_rand(0, 500));
+            $manager->persist($player);
         }
         $manager->flush();
     }
