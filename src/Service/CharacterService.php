@@ -47,4 +47,22 @@ class CharacterService implements CharacterServiceInterface
 
        return $charactersFinal;
     }
+
+    public function modify() {
+        $character = new Character();
+        $character
+            ->setKind('Seigneur')
+            ->setName('Curambar')
+            ->setSurname('Maître du destin')
+            ->setCaste('Erudit')
+            ->setKnowledge('Lettres')
+            ->setIntelligence(140)
+            ->setLife(10)
+            ->setImage('/images/Curambar.jpeg');
+
+        $this->em->persist($character);
+        $this->em->flush();
+
+        return $character;
+    }
 }

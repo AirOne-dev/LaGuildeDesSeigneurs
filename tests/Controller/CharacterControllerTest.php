@@ -42,6 +42,12 @@ class CharacterControllerTest extends WebTestCase
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
+    public function testModify(): void
+    {
+        $this->client->request('PUT', '/character/modify/8032d86185bdf48faf161ed2f88ec0ced2dae056');
+        $this->assertJsonResponse($this->client->getResponse());
+    }
+
     public function testBadIdentifier(): void
     {
         $this->client->request('GET', '/character/display/basIdentifier');
