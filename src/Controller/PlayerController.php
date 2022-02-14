@@ -17,7 +17,7 @@ class PlayerController extends AbstractController
         $this->playerService = $playerService;
     }
 
-    #[Route('/player/display/{id}', name: 'player_display', requirements: ['id' => '^([0-9])$'], methods: ['GET', 'HEAD'])]
+    #[Route('/player/display/{identifier}', name: 'player_display', requirements: ['identifier' => '^([a-z0-9]{40})$'], methods: ['GET', 'HEAD'])]
     public function display(Player $player): Response
     {
         $this->denyAccessUnlessGranted('playerDisplay', $player);
@@ -46,7 +46,7 @@ class PlayerController extends AbstractController
         return new JsonResponse($players);
     }
 
-    #[Route('/player/update/{id}', name: 'player_update', requirements: ['id' => '^([0-9])$'], methods: ['PUT', 'HEAD'])]
+    #[Route('/player/update/{identifier}', name: 'player_update', requirements: ['identifier' => '^([a-z0-9]{40})$'], methods: ['PUT', 'HEAD'])]
     public function modify(Player $player): Response
     {
         $this->denyAccessUnlessGranted('playerUpdate', $player);

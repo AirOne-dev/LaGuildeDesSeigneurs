@@ -31,6 +31,12 @@ class Player
     #[ORM\Column(type: 'datetime')]
     private $creationDate;
 
+    #[ORM\Column(type: 'string', length: 40)]
+    private $identifier;
+
+    #[ORM\Column(type: 'datetime')]
+    private $modification;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -109,6 +115,30 @@ class Player
     public function setCreationDate(\DateTimeInterface $creationDate): self
     {
         $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(string $identifier): self
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    public function getModification(): ?\DateTimeInterface
+    {
+        return $this->modification;
+    }
+
+    public function setModification(\DateTimeInterface $modification): self
+    {
+        $this->modification = $modification;
 
         return $this;
     }

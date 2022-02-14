@@ -25,7 +25,9 @@ class PlayerService implements PlayerServiceInterface
             ->setLastname('MARTIN')
             ->setEmail('erwan1207@gmail.com')
             ->setMirian(0)
-            ->setCreationDate(new \DateTime());
+            ->setCreationDate(new \DateTime())
+            ->setIdentifier(hash('sha1', uniqid()))
+            ->setModification(new \DateTime());
 
         $this->em->persist($player);
         $this->em->flush();
@@ -51,7 +53,8 @@ class PlayerService implements PlayerServiceInterface
             ->setLastname('MARTIN')
             ->setEmail('mae311010@gmail.com')
             ->setMirian(0)
-            ->setCharacterId(1);
+            ->setCharacterId(1)
+            ->setModification(new \DateTime());
 
         $this->em->persist($player);
         $this->em->flush();
