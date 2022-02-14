@@ -71,6 +71,17 @@ class CharacterControllerTest extends WebTestCase
         $this->assertError404($this->client->getResponse()->getStatusCode());
     }
 
+    public function testImages()
+    {
+        //Tests without kind
+        $this->client->request('GET', '/character/images/3');
+        $this->assertJsonResponse();
+
+        //Tests with kind
+        $this->client->request('GET', '/character/images/dame/3');
+        $this->assertJsonResponse();
+    }
+
     public function assertJsonResponse(): void
     {
         $response = $this->client->getResponse();
