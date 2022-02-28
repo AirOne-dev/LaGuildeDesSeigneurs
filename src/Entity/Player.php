@@ -16,7 +16,7 @@ class Player
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 16)]
+    #[ORM\Column(name: 'gls_firstname', type: 'string', length: 16)]
     #[Assert\NotBlank]
     #[Assert\Length(
         min: 3,
@@ -24,7 +24,7 @@ class Player
     )]
     private $firstname;
 
-    #[ORM\Column(type: 'string', length: 16)]
+    #[ORM\Column(name: 'gls_lastname', type: 'string', length: 16)]
     #[Assert\NotBlank]
     #[Assert\Length(
         min: 3,
@@ -32,7 +32,7 @@ class Player
     )]
     private $lastname;
 
-    #[ORM\Column(type: 'string', length: 64)]
+    #[ORM\Column(name: 'gls_email', type: 'string', length: 64)]
     #[Assert\NotBlank]
     #[Assert\Length(
         min: 3,
@@ -40,18 +40,18 @@ class Player
     )]
     private $email;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'gls_mirian', type: 'integer')]
     #[Assert\NotBlank]
     private $mirian;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'gls_characterId', type: 'integer', nullable: true)]
     private $characterId;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(name: 'gls_creationDate', type: 'datetime')]
     #[Assert\NotBlank]
     private $creationDate;
 
-    #[ORM\Column(type: 'string', length: 40)]
+    #[ORM\Column(name: 'gls_identifier', type: 'string', length: 40)]
     #[Assert\NotBlank]
     #[Assert\Length(
         min: 40,
@@ -59,7 +59,7 @@ class Player
     )]
     private $identifier;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(name: 'gls_modification', type: 'datetime')]
     #[Assert\NotBlank]
     private $modification;
 

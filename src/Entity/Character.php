@@ -14,7 +14,7 @@ class Character
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 16)]
+    #[ORM\Column(name: 'gls_name', type: 'string', length: 16)]
     #[Assert\NotBlank]
     #[Assert\Length(
         min: 3,
@@ -22,7 +22,7 @@ class Character
     )]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 64)]
+    #[ORM\Column(name: 'gls_surname', type: 'string', length: 64)]
     #[Assert\NotBlank]
     #[Assert\Length(
         min: 3,
@@ -30,34 +30,34 @@ class Character
     )]
     private $surname;
 
-    #[ORM\Column(type: 'string', length: 16, nullable: true)]
+    #[ORM\Column(name: 'gls_caste', type: 'string', length: 16, nullable: true)]
     #[Assert\Length(
         min: 3,
         max: 16,
     )]
     private $caste;
 
-    #[ORM\Column(type: 'string', length: 16, nullable: true)]
+    #[ORM\Column(name: 'gls_knowledge', type: 'string', length: 16, nullable: true)]
     #[Assert\Length(
         min: 3,
         max: 16,
     )]
     private $knowledge;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'gls_intelligence', type: 'integer', nullable: true)]
     private $intelligence;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'gls_life', type: 'integer', nullable: true)]
     private $life;
 
-    #[ORM\Column(type: 'string', length: 128, nullable: true)]
+    #[ORM\Column(name: 'gls_image', type: 'string', length: 128, nullable: true)]
     #[Assert\Length(
         min: 5,
         max: 128,
     )]
     private $image;
 
-    #[ORM\Column(type: 'string', length: 16)]
+    #[ORM\Column(name: 'gls_kind', type: 'string', length: 16)]
     #[Assert\NotBlank]
     #[Assert\Length(
         min: 3,
@@ -65,17 +65,17 @@ class Character
     )]
     private $kind;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(name: 'gls_creation', type: 'datetime')]
     private $creation;
 
-    #[ORM\Column(type: 'string', length: 40)]
+    #[ORM\Column(name: 'gls_identifier', type: 'string', length: 40)]
     #[Assert\Length(
         min: 40,
         max: 40,
     )]
     private $identifier;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(name: 'gls_modification', type: 'datetime')]
     private $modification;
 
     #[ORM\ManyToOne(targetEntity: Player::class, inversedBy: 'characters')]
