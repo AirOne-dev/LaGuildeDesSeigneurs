@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PlayerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PlayerRepository::class)]
 class Player
@@ -14,27 +15,50 @@ class Player
     private $id;
 
     #[ORM\Column(type: 'string', length: 16)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 16,
+    )]
     private $firstname;
 
     #[ORM\Column(type: 'string', length: 16)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 16,
+    )]
     private $lastname;
 
     #[ORM\Column(type: 'string', length: 64)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 64,
+    )]
     private $email;
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
     private $mirian;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $characterId;
 
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
     private $creationDate;
 
     #[ORM\Column(type: 'string', length: 40)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 40,
+        max: 40,
+    )]
     private $identifier;
 
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
     private $modification;
 
     public function getId(): ?int
