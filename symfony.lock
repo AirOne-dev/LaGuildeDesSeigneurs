@@ -297,6 +297,9 @@
             ".env"
         ]
     },
+    "symfony/form": {
+        "version": "v6.0.3"
+    },
     "symfony/framework-bundle": {
         "version": "6.0",
         "recipe": {
@@ -349,6 +352,9 @@
             "config/packages/test/monolog.yaml"
         ]
     },
+    "symfony/options-resolver": {
+        "version": "v6.0.3"
+    },
     "symfony/password-hasher": {
         "version": "v6.0.3"
     },
@@ -368,6 +374,9 @@
         ]
     },
     "symfony/polyfill-intl-grapheme": {
+        "version": "v1.24.0"
+    },
+    "symfony/polyfill-intl-icu": {
         "version": "v1.24.0"
     },
     "symfony/polyfill-intl-normalizer": {

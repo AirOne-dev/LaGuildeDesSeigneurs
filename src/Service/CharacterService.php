@@ -3,40 +3,81 @@
 namespace App\Service;
 
 use App\Entity\Character;
+use App\Form\CharacterType;
 use App\Repository\CharacterRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Finder\Finder;
+use LogicException;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class CharacterService implements CharacterServiceInterface
 {
     private $em;
     private $characterRepository;
 
-    public function __construct(EntityManagerInterface $em, CharacterRepository $cr)
+    public function __construct(EntityManagerInterface $em, CharacterRepository $cr, FormFactoryInterface $formFactory)
     {
         $this->em = $em;
         $this->characterRepository = $cr;
+        $this->formFactory = $formFactory;
     }
 
-    public function create() {
+    public function create(string $data)
+    {
+        //Use with {"kind":"Dame","name":"Eldalótë","surname":"Fleur elfique","caste":"Elfe","knowledge":"Arts","intelligence":120,"life":12,"image":"/images/eldalote.jpg"}
         $character = new Character();
         $character
-            ->setKind('Seigneur')
-            ->setName('Curambar')
-            ->setSurname('Maître du destin')
-            ->setCaste('Erudit')
-            ->setKnowledge('Lettres')
-            ->setIntelligence(140)
-            ->setLife(10)
-            ->setImage('/images/Curambar.jpeg')
-            ->setCreation(new \DateTime())
             ->setIdentifier(hash('sha1', uniqid()))
-            ->setModification(new \DateTime());
+            ->setCreation(new DateTime())
+            ->setModification(new DateTime())
+        ;
+        $this->submit($character, CharacterType::class, $data);
+        $this->isEntityFilled($character);
 
         $this->em->persist($character);
         $this->em->flush();
 
         return $character;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEntityFilled(Character $character)
+    {
+        if (null === $character->getKind() ||
+            null === $character->getName() ||
+            null === $character->getSurname() ||
+            null === $character->getIdentifier() ||
+            null === $character->getCreation() ||
+            null === $character->getModification()) {
+            throw new UnprocessableEntityHttpException('Missing data for Entity -> ' . json_encode($character->toArray()));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function submit(Character $character, $formName, $data)
+    {
+        $dataArray = is_array($data) ? $data : json_decode($data, true);
+
+        //Bad array
+        if (null !== $data && !is_array($dataArray)) {
+            throw new UnprocessableEntityHttpException('Submitted data is not an array -> ' . $data);
+        }
+
+        //Submits form
+        $form = $this->formFactory->create($formName, $character, ['csrf_protection' => false]);
+        $form->submit($dataArray, false);//With false, only submitted fields are validated
+
+        //Gets errors
+        $errors = $form->getErrors();
+        foreach ($errors as $error) {
+            throw new LogicException('Error ' . get_class($error->getCause()) . ' --> ' . $error->getMessageTemplate() . ' ' . json_encode($error->getMessageParameters()));
+        }
     }
 
     public function getAll()
@@ -50,17 +91,10 @@ class CharacterService implements CharacterServiceInterface
        return $charactersFinal;
     }
 
-    public function modify(Character $character) {
-        $character
-            ->setKind('Seigneur')
-            ->setName('Curambar')
-            ->setSurname('Maître du destin')
-            ->setCaste('Erudit')
-            ->setKnowledge('Lettres')
-            ->setIntelligence(140)
-            ->setLife(10)
-            ->setImage('/images/Curambar.jpeg')
-            ->setModification(new \DateTime());
+    public function modify(Character $character, string $data) {
+        $this->submit($character, CharacterType::class, $data);
+        $this->isEntityFilled($character);
+        $character->setModification(new \DateTime());
 
         $this->em->persist($character);
         $this->em->flush();
