@@ -18,7 +18,13 @@ class PlayerControllerTest extends WebTestCase
 
     public function testCreate(): void
     {
-        $this->client->request('POST', '/player/create');
+        $this->client->request(
+            'POST',
+            '/player/create',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            '{"characterId":1, "creationDate":"10-12-2022-10:10:10", "email":"test@test.com", "identifier":"'.self::$identifier.'", "lastname":"lastname", "mirian":120, "modification":"10-12-2022-10:10:10"}');
 
         $this->assertJsonResponse();
         $this->defineIdentifier();
@@ -49,8 +55,29 @@ class PlayerControllerTest extends WebTestCase
 
     public function testModify(): void
     {
-        $this->client->request('PUT', '/player/update/' . self::$identifier);
+        //Tests with partial data array
+        $this->client->request(
+            'PUT',
+            '/player/modify/' . self::$identifier,
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            '{"kind":"Seigneur", "name":"Gorthol"}');
+
         $this->assertJsonResponse();
+        $this->assertIdentifier();
+
+        //Tests with whole content
+        $this->client->request(
+            'PUT',
+            '/player/modify/' . self::$identifier,
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            '{"characterId":1, "creationDate":"10-12-2022-10:10:10", "email":"test@test.com", "identifier":"'.self::$identifier.'", "lastname":"lastname", "mirian":120, "modification":"10-12-2022-10:10:10"}');
+
+        $this->assertJsonResponse();
+        $this->assertIdentifier();
     }
 
     public function testDelete(): void

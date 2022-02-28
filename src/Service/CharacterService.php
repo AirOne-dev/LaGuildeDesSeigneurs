@@ -16,6 +16,7 @@ class CharacterService implements CharacterServiceInterface
 {
     private $em;
     private $characterRepository;
+    private $formFactory;
 
     public function __construct(EntityManagerInterface $em, CharacterRepository $cr, FormFactoryInterface $formFactory)
     {

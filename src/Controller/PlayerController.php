@@ -46,11 +46,11 @@ class PlayerController extends AbstractController
         return new JsonResponse($players);
     }
 
-    #[Route('/player/update/{identifier}', name: 'player_update', requirements: ['identifier' => '^([a-z0-9]{40})$'], methods: ['PUT', 'HEAD'])]
-    public function modify(Player $player): Response
+    #[Route('/player/modify/{identifier}', name: 'player_update', requirements: ['identifier' => '^([a-z0-9]{40})$'], methods: ['PUT', 'HEAD'])]
+    public function modify(Request $request, Player $player): Response
     {
         $this->denyAccessUnlessGranted('playerUpdate', $player);
-        $player = $this->playerService->update($player);
+        $player = $this->playerService->modify($player, $request->getContent());
         return new JsonResponse($player->toArray());
     }
 
