@@ -119,7 +119,7 @@ class Player
         return get_object_vars($this);
     }
 
-    public function getCharacterId(): ?array
+    public function getCharacterId(): ?int
     {
         return $this->characterId;
     }
