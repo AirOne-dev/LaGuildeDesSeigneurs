@@ -13,11 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 
 class PlayerController extends AbstractController
 {
-    private PlayerServiceInterface $playerService;
-
-    public function __construct(PlayerServiceInterface $playerService)
+    public function __construct(private readonly PlayerServiceInterface $playerService)
     {
-        $this->playerService = $playerService;
     }
 
     #[Route('/player/display/{identifier}', name: 'player_display', requirements: ['identifier' => '^([a-z0-9]{40})$'], methods: ['GET', 'HEAD'])]

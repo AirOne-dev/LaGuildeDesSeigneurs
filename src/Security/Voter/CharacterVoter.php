@@ -10,13 +10,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CharacterVoter extends Voter
 {
-    public const CHARACTER_DISPLAY = 'characterDisplay';
-    public const CHARACTER_CREATE = 'characterCreate';
-    public const CHARACTER_INDEX = 'characterIndex';
-    public const CHARACTER_MODIFY = 'characterModify';
-    public const CHARACTER_DELETE = 'characterDelete';
+    public final const CHARACTER_DISPLAY = 'characterDisplay';
+    public final const CHARACTER_CREATE = 'characterCreate';
+    public final const CHARACTER_INDEX = 'characterIndex';
+    public final const CHARACTER_MODIFY = 'characterModify';
+    public final const CHARACTER_DELETE = 'characterDelete';
 
-    public const ATTRIBUTES = [
+    public final const ATTRIBUTES = [
         self::CHARACTER_DISPLAY,
         self::CHARACTER_CREATE,
         self::CHARACTER_INDEX,
@@ -35,25 +35,13 @@ class CharacterVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
-
-        // ... (check conditions and return true to grant permission) ...
-        switch ($attribute) {
-            case self::CHARACTER_DISPLAY:
-            case self::CHARACTER_INDEX:
-                return $this->canDisplay();
-                break;
-            case self::CHARACTER_CREATE:
-                return $this->canCreate();
-                break;
-            case self::CHARACTER_MODIFY:
-                return $this->canModify();
-                break;
-            case self::CHARACTER_DELETE:
-                return $this->canDelete();
-                break;
-        }
-
-        throw new LogicException('Invalid attribute: ' . $attribute);
+        return match ($attribute) {
+            self::CHARACTER_DISPLAY, self::CHARACTER_INDEX => $this->canDisplay(),
+            self::CHARACTER_CREATE => $this->canCreate(),
+            self::CHARACTER_MODIFY => $this->canModify(),
+            self::CHARACTER_DELETE => $this->canDelete(),
+            default => throw new LogicException('Invalid attribute: ' . $attribute),
+        };
     }
 
     /**

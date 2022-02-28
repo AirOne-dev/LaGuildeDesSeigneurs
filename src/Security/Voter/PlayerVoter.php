@@ -9,12 +9,12 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class PlayerVoter extends Voter
 {
-    public const PLAYER_DISPLAY = 'playerDisplay';
-    public const PLAYER_CREATE = 'playerCreate';
-    public const PLAYER_UPDATE = 'playerUpdate';
-    public const PLAYER_DELETE = 'playerDelete';
+    public final const PLAYER_DISPLAY = 'playerDisplay';
+    public final const PLAYER_CREATE = 'playerCreate';
+    public final const PLAYER_UPDATE = 'playerUpdate';
+    public final const PLAYER_DELETE = 'playerDelete';
 
-    public const ATTRIBUTES = [
+    public final const ATTRIBUTES = [
         self::PLAYER_DISPLAY,
         self::PLAYER_CREATE,
         self::PLAYER_UPDATE,
@@ -31,24 +31,13 @@ class PlayerVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
-
-        // ... (check conditions and return true to grant permission) ...
-        switch ($attribute) {
-            case self::PLAYER_DISPLAY:
-                return $this->canDisplay();
-                break;
-            case self::PLAYER_CREATE:
-                return $this->canCreate();
-                break;
-            case self::PLAYER_UPDATE:
-                return $this->canUpdate();
-                break;
-            case self::PLAYER_DELETE:
-                return $this->canDelete();
-                break;
-        }
-
-        throw new LogicException('Invalid attribute: ' . $attribute);
+        return match ($attribute) {
+            self::PLAYER_DISPLAY => $this->canDisplay(),
+            self::PLAYER_CREATE => $this->canCreate(),
+            self::PLAYER_UPDATE => $this->canUpdate(),
+            self::PLAYER_DELETE => $this->canDelete(),
+            default => throw new LogicException('Invalid attribute: ' . $attribute),
+        };
     }
 
     /**

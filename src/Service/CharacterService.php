@@ -20,17 +20,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CharacterService implements CharacterServiceInterface
 {
-    private $em;
-    private $characterRepository;
-    private $formFactory;
-    private $validator;
-
-    public function __construct(EntityManagerInterface $em, CharacterRepository $cr, FormFactoryInterface $formFactory, ValidatorInterface $validator)
+    public function __construct(private readonly EntityManagerInterface $em, private readonly CharacterRepository $characterRepository, private readonly FormFactoryInterface $formFactory, private readonly ValidatorInterface $validator)
     {
-        $this->em = $em;
-        $this->characterRepository = $cr;
-        $this->formFactory = $formFactory;
-        $this->validator = $validator;
     }
 
     public function create(string $data)
@@ -58,7 +49,7 @@ class CharacterService implements CharacterServiceInterface
     {
         $errors = $this->validator->validate($character);
         if (count($errors) > 0) {
-            throw new UnprocessableEntityHttpException((string) $errors . ' Missing data for Entity -> ' . json_encode($character->toArray()));
+            throw new UnprocessableEntityHttpException((string) $errors . ' Missing data for Entity -> ' . json_encode($character->toArray(), JSON_THROW_ON_ERROR));
         }
     }
 
@@ -67,7 +58,7 @@ class CharacterService implements CharacterServiceInterface
      */
     public function submit(Character $character, $formName, $data)
     {
-        $dataArray = is_array($data) ? $data : json_decode($data, true);
+        $dataArray = is_array($data) ? $data : json_decode($data, true, 512, JSON_THROW_ON_ERROR);
 
         //Bad array
         if (null !== $data && !is_array($dataArray)) {
@@ -81,7 +72,7 @@ class CharacterService implements CharacterServiceInterface
         //Gets errors
         $errors = $form->getErrors();
         foreach ($errors as $error) {
-            throw new LogicException('Error ' . get_class($error->getCause()) . ' --> ' . $error->getMessageTemplate() . ' ' . json_encode($error->getMessageParameters()));
+            throw new LogicException('Error ' . $error->getCause()::class . ' --> ' . $error->getMessageTemplate() . ' ' . json_encode($error->getMessageParameters(), JSON_THROW_ON_ERROR));
         }
     }
 
@@ -143,9 +134,7 @@ class CharacterService implements CharacterServiceInterface
     {
         $encoders = new JsonEncoder();
         $defaultContext = [
-            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($data) {
-                return $data->getIdentifier();
-            },
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => fn($data) => $data->getIdentifier(),
         ];
         $normalizers = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
         $serializer = new Serializer([new DateTimeNormalizer(), $normalizers], [$encoders]);

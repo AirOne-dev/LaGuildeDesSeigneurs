@@ -13,11 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 
 class CharacterController extends AbstractController
 {
-    private $characterService;
-
-    public function __construct(CharacterServiceInterface $characterService)
+    public function __construct(private readonly CharacterServiceInterface $characterService)
     {
-        $this->characterService = $characterService;
     }
 
     #[Route('/character/display/{identifier}', name: 'character_display', requirements: ['identifier' => '^([a-z0-9]{40})$'], methods: ['GET', 'HEAD'])]
