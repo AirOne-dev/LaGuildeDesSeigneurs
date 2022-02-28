@@ -15,7 +15,8 @@ class PlayerController extends AbstractController
 {
     private PlayerServiceInterface $playerService;
 
-    public function __construct(PlayerServiceInterface $playerService) {
+    public function __construct(PlayerServiceInterface $playerService)
+    {
         $this->playerService = $playerService;
     }
 

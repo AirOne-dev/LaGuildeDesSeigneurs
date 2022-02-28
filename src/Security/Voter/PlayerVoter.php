@@ -23,7 +23,7 @@ class PlayerVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        if($subject !== null) {
+        if ($subject !== null) {
             return $subject instanceof Player && in_array($attribute, self::ATTRIBUTES);
         }
         return in_array($attribute, self::ATTRIBUTES);

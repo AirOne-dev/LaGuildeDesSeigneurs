@@ -23,5 +23,4 @@ interface CharacterServiceInterface
     public function submit(Character $character, $formName, $data);
 
     public function serializeJson($data);
-
 }

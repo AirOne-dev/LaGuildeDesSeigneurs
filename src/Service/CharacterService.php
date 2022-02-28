@@ -57,8 +57,7 @@ class CharacterService implements CharacterServiceInterface
     public function isEntityFilled(Character $character)
     {
         $errors = $this->validator->validate($character);
-        if (count($errors) > 0)
-        {
+        if (count($errors) > 0) {
             throw new UnprocessableEntityHttpException((string) $errors . ' Missing data for Entity -> ' . json_encode($character->toArray()));
         }
     }
@@ -91,7 +90,8 @@ class CharacterService implements CharacterServiceInterface
         return  $this->characterRepository->findAll();
     }
 
-    public function modify(Character $character, string $data) {
+    public function modify(Character $character, string $data)
+    {
         $this->submit($character, CharacterType::class, $data);
         $this->isEntityFilled($character);
         $character->setModification(new \DateTime());
@@ -102,7 +102,8 @@ class CharacterService implements CharacterServiceInterface
         return $character;
     }
 
-    public function delete(Character $character) {
+    public function delete(Character $character)
+    {
         $this->em->remove($character);
         $this->em->flush();
         return true;
@@ -111,7 +112,8 @@ class CharacterService implements CharacterServiceInterface
     public function getImages(int $number, ?string $kind = null)
     {
         $folder = __DIR__ . '/../../public/images/';
-        $finder = new Finder(); $finder
+        $finder = new Finder();
+        $finder
         ->files()
         ->in($folder)
         ->notPath('/cartes/')
@@ -141,8 +143,7 @@ class CharacterService implements CharacterServiceInterface
     {
         $encoders = new JsonEncoder();
         $defaultContext = [
-            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($data)
-            {
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($data) {
                 return $data->getIdentifier();
             },
         ];

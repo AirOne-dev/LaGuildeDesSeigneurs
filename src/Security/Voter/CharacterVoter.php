@@ -10,7 +10,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CharacterVoter extends Voter
 {
-
     public const CHARACTER_DISPLAY = 'characterDisplay';
     public const CHARACTER_CREATE = 'characterCreate';
     public const CHARACTER_INDEX = 'characterIndex';
@@ -28,7 +27,7 @@ class CharacterVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        if($subject !== null) {
+        if ($subject !== null) {
             return $subject instanceof Character && in_array($attribute, self::ATTRIBUTES);
         }
         return in_array($attribute, self::ATTRIBUTES);

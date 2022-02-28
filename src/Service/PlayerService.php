@@ -21,6 +21,7 @@ class PlayerService implements PlayerServiceInterface
     private EntityManagerInterface $em;
     private PlayerRepository $playerRepository;
     private $formFactory;
+    private $validator;
 
     public function __construct(EntityManagerInterface $em, PlayerRepository $cr, FormFactoryInterface $formFactory, ValidatorInterface $validator)
     {
@@ -53,9 +54,8 @@ class PlayerService implements PlayerServiceInterface
     public function isEntityFilled(Player $player)
     {
         $errors = $this->validator->validate($player);
-        if (count($errors) > 0)
-        {
-            throw new UnprocessableEntityHttpException((string) $errors . ' Missing data for Entity -> ' . json_encode($player->toArray()));
+        if (count($errors) > 0) {
+            throw new UnprocessableEntityHttpException((string) $errors . ' Missing data for Entity -> ' . $player::class);
         }
     }
 
@@ -84,7 +84,8 @@ class PlayerService implements PlayerServiceInterface
 
     public function getAll(): array
     {
-        return $this->playerRepository->findAll();;
+        return $this->playerRepository->findAll();
+        ;
     }
 
     public function modify(Player $player, string $data): Player
@@ -113,10 +114,9 @@ class PlayerService implements PlayerServiceInterface
     {
         $encoders = new JsonEncoder();
         $defaultContext = [
-            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($data)
-            {
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($data) {
                 return $data->getIdentifier();
-                },
+            },
             ];
         $normalizers = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
         $serializer = new Serializer([new DateTimeNormalizer(), $normalizers], [$encoders]);

@@ -9,12 +9,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 
 class CharacterController extends AbstractController
 {
     private $characterService;
 
-    public function __construct(CharacterServiceInterface $characterService) {
+    public function __construct(CharacterServiceInterface $characterService)
+    {
         $this->characterService = $characterService;
     }
 
@@ -78,5 +80,4 @@ class CharacterController extends AbstractController
         $this->denyAccessUnlessGranted('characterIndex', null);
         return new JsonResponse($this->characterService->getImagesKind($kind, $number));
     }
-
 }
