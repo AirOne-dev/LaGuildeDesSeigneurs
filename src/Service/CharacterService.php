@@ -93,8 +93,6 @@ class CharacterService implements CharacterServiceInterface
     public function modify(Character $character, string $data)
     {
         $this->submit($character, CharacterType::class, $data);
-        $event = new CharacterEvent($character);
-        $this->dispatcher->dispatch($event, CharacterEvent::CHARACTER_UPDATED);
         $this->isEntityFilled($character);
         $character->setModification(new \DateTime());
 

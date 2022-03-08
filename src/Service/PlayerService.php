@@ -3,10 +3,12 @@
 namespace App\Service;
 
 use App\Entity\Player;
+use App\Event\PlayerEvent;
 use App\Form\PlayerType;
 use App\Repository\PlayerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -18,8 +20,11 @@ use Symfony\Component\Serializer\Serializer;
 
 class PlayerService implements PlayerServiceInterface
 {
-    public function __construct(private readonly EntityManagerInterface $em, private readonly PlayerRepository $playerRepository, private readonly FormFactoryInterface $formFactory, private readonly ValidatorInterface $validator)
+    private $dispatcher;
+
+    public function __construct(EventDispatcherInterface $dispatcher, private readonly EntityManagerInterface $em, private readonly PlayerRepository $playerRepository, private readonly FormFactoryInterface $formFactory, private readonly ValidatorInterface $validator)
     {
+        $this->dispatcher = $dispatcher;
     }
 
     public function create(string $data): Player
@@ -76,12 +81,13 @@ class PlayerService implements PlayerServiceInterface
     public function getAll(): array
     {
         return $this->playerRepository->findAll();
-        ;
     }
 
     public function modify(Player $player, string $data): Player
     {
         $this->submit($player, PlayerType::class, $data);
+        $event = new PlayerEvent($player);
+        $this->dispatcher->dispatch($event, PlayerEvent::PLAYER_UPDATED);
         $this->isEntityFilled($player);
         $player->setModification(new \DateTime());
 
