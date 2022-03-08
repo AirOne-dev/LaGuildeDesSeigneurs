@@ -29,4 +29,9 @@ interface CharacterServiceInterface
      */
     public function createFromHtml(Character $character);
 
+    /**
+     * Modifies the character from html form
+     */
+    public function modifyFromHtml(Character $character);
+
 }

@@ -14,14 +14,49 @@ class CharacterHtmlType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('caste', TextType::class, array('required' => false,'help' => 'Caste du Character'))
-            ->add('knowledge', IntegerType::class, array('required' => false))
-            ->add('intelligence', IntegerType::class, array('required' => false,'help' => 'Niveau d\'intelligence du Character (1-250)','attr' => array('min' => 1,'max' => 250)))
-            ->add('life', IntegerType::class, array('required' => false,'label' => 'Niveau de vie','attr' => array('min' => 1,'max' => 250,'placeholder' => 'Niveau de vie du Character (1-250)')))
-            ->add('image', TextType::class, array('required' => false))
-            ->add('name', TextType::class)
-            ->add('surname', TextType::class)
-            ->add('kind', TextType::class)
+            ->add('name', TextType::class, array(
+                'required' => false,
+                'label' => 'Nom'
+            ))
+            ->add('surname', TextType::class, array(
+                'required' => false,
+                'label' => 'Prénom'
+            ))
+            ->add('caste', TextType::class, array(
+                'required' => false,
+                'label' => 'Race'
+            ))
+            ->add('knowledge', TextType::class, array(
+                'required' => false,
+                'label' => 'Compétence'
+            ))
+            ->add('intelligence', IntegerType::class, array(
+                'required' => false,
+                'label' => 'Niveau d\'intelligence',
+                'help' => '(entre 1 et 250)',
+                'attr' => array(
+                    'min' => 1,
+                    'max' => 250
+                )
+            ))
+            ->add('life', IntegerType::class, array(
+                'required' => false,
+                'label' => 'Niveau de vie',
+                'help' => '(entre 1 et 250)',
+                'attr' => array(
+                    'min' => 1,
+                    'max' => 250
+                )
+            ))
+            ->add('image', TextType::class, array(
+                'required' => false,
+                'label' => 'Chemin de l\'image'
+            ))
+            ->add('kind', TextType::class, array(
+                'required' => false,
+                'label' => 'Sexe',
+                'help' => '(Dame - Homme)',
+            ))
         ;
     }
 

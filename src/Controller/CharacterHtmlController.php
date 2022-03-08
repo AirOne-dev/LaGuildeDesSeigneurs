@@ -62,9 +62,8 @@ class CharacterHtmlController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('character_html_index', [], Response::HTTP_SEE_OTHER);
+            $this->characterService->modifyFromHtml($character);
+            return $this->redirectToRoute('character_html_show', array('id' => $character->getId(),));
         }
 
         return $this->renderForm('character_html/edit.html.twig', [
