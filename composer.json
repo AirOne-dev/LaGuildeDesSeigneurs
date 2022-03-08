@@ -1,8 +1,16 @@
 {
-    "name": "symfony/skeleton",
+    "name": "erwan-martin/la-guilde-des-seigneurs",
     "type": "project",
-    "license": "MIT",
-    "description": "A minimal Symfony project recommended to create bare bones applications",
+    "description": "API La Guilde des Seigneurs",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Erwan Martin",
+            "email": "erwan1207@gmail.com",
+            "homepage": "https://erwan-martin.fr",
+            "role": "developer"
+        }
+    ],
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
