@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Index des Personnages
+{% endblock %}
+
+{% block body %}
+    <div class="container-xl d-flex flex-column justify-content-center" style="height: 100vh;">
+    <div class="d-flex flex-row align-items-start">
+        <h1>Index des Personnages</h1>
+    </div>
+    <div class="d-flex flex-column align-items-center">
+        <table class="table table-hover">
+            <thead class="text-center">
+            <tr>
+                <th>Kind</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Caste</th>
+                <th>Knowledge</th>
+                <th>Intelligence</th>
+                <th>Life</th>
+                <th>Creation</th>
+                <th>Modification</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody class="text-center">
+            {% for character in characters %}
+                <tr>
+                    {% if character.kind == "Dame" %}
+                        <td>
+                            <strong>{{ character.kind }}</strong>
+                        </td>
+                    {% else %}
+                        <td>
+                            {{ character.kind }}
+                        </td>
+                    {% endif %}
+                    <td>
+                        <a href="{{ path('character_html_show', {'id': character.id}) }}">{{ character.name }}</a>
+                    </td>
+                    <td>{{ character.surname }}</td>
+                    <td>{{ character.caste }}</td>
+                    <td>{{ character.knowledge }}</td>
+                    <td>{{ character.intelligence }}</td>
+                    <td>{{ character.life }}</td>
+                    <td>{{ character.creation ? character.creation|date('d/m/Y') : '' }}</td>
+                    <td>{{ character.modification ? character.modification|date('d/m/Y') : '' }}</td>
+                    <td>
+                        <a href="{{ path('character_html_edit', {'id': character.id}) }}">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="13">Aucune entrée trouvée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </tbody>
+        </table>
+
+        <a href="{{ path('character_html_new') }}">
+            <button type="button" class="btn btn-primary">Nouveau personnage</button>
+        </a>
+    </div>
+    </div>{% endblock %}

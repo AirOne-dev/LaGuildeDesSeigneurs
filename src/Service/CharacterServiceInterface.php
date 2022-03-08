@@ -23,4 +23,10 @@ interface CharacterServiceInterface
     public function submit(Character $character, $formName, $data);
 
     public function serializeJson($data);
+
+    /**
+     * Creates the character from html form
+     */
+    public function createFromHtml(Character $character);
+
 }
