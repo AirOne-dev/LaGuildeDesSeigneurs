@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Character;
+use App\Event\CharacterEvent;
 use App\Service\CharacterServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,8 +17,11 @@ use OpenApi\Annotations as OA;
 
 class CharacterController extends AbstractController
 {
-    public function __construct(private readonly CharacterServiceInterface $characterService)
+    private $dispatcher;
+
+    public function __construct(EventDispatcherInterface $dispatcher, private readonly CharacterServiceInterface $characterService)
     {
+        $this->dispatcher = $dispatcher;
     }
 
     //DISPLAY
@@ -48,8 +53,11 @@ class CharacterController extends AbstractController
      */
     #[Route('/character/display/{identifier}', name: 'character_display', requirements: ['identifier' => '^([a-z0-9]{40})$'], methods: ['GET', 'HEAD'])]
     #[Entity('character', expr:'repository.findOneByIdentifier(identifier)')]
-    public function display(Character $character): Response
+    public function display(EventDispatcherInterface $dispatcher, Character $character): Response
     {
+        $event = new CharacterEvent($character);
+        $this->dispatcher->dispatch($event, CharacterEvent::CHARACTER_DISPLAYED);
+
         $this->denyAccessUnlessGranted('characterDisplay', $character);
         return JsonResponse::fromJsonString($this->characterService->serializeJson($character));
     }
