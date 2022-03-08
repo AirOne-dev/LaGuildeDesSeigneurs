@@ -11,7 +11,7 @@ class CharacterListener implements EventSubscriberInterface
     {
         return array(
             CharacterEvent::CHARACTER_CREATED => 'characterCreated',
-            CharacterEvent::CHARACTER_DISPLAYED => 'characterDisplayed'
+            CharacterEvent::CHARACTER_UPDATED => 'characterUpdated'
             );
     }
 
@@ -19,10 +19,7 @@ class CharacterListener implements EventSubscriberInterface
     {
         $character = $event->getCharacter();
         $character->setIntelligence(250);
-    }
 
-    public function characterDisplayed($event)
-    {
         $currentDate = date('Y-m-d');
         $currentDate = date('Y-m-d', strtotime($currentDate));
 
@@ -32,6 +29,16 @@ class CharacterListener implements EventSubscriberInterface
         if (($currentDate >= $startDate) && ($currentDate <= $endDate)){
             $character = $event->getCharacter();
             $character->setLife(20);
+        }
+    }
+
+    public function characterUpdated($event)
+    {
+        $character = $event->getCharacter();
+        if($character->getMirian() >= 10) {
+            $character->setMirian($character->getMirian() - 10);
+        } else {
+            $character->setMirian(0);
         }
     }
 }

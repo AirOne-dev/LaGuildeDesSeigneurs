@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Character;
-use App\Event\CharacterEvent;
 use App\Service\CharacterServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -17,11 +16,8 @@ use OpenApi\Annotations as OA;
 
 class CharacterController extends AbstractController
 {
-    private $dispatcher;
-
-    public function __construct(EventDispatcherInterface $dispatcher, private readonly CharacterServiceInterface $characterService)
+    public function __construct(private readonly CharacterServiceInterface $characterService)
     {
-        $this->dispatcher = $dispatcher;
     }
 
     //DISPLAY
@@ -55,9 +51,6 @@ class CharacterController extends AbstractController
     #[Entity('character', expr:'repository.findOneByIdentifier(identifier)')]
     public function display(EventDispatcherInterface $dispatcher, Character $character): Response
     {
-        $event = new CharacterEvent($character);
-        $this->dispatcher->dispatch($event, CharacterEvent::CHARACTER_DISPLAYED);
-
         $this->denyAccessUnlessGranted('characterDisplay', $character);
         return JsonResponse::fromJsonString($this->characterService->serializeJson($character));
     }

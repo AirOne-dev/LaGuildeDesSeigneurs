@@ -8,7 +8,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 class CharacterEvent extends Event
 {
     public const CHARACTER_CREATED = 'app.character.created';
-    public const CHARACTER_DISPLAYED = 'app.character.displayed';
+    public const CHARACTER_UPDATED = 'app.character.updated';
     protected $character;
 
     public function __construct(Character $character)
