@@ -76,6 +76,10 @@ class CharacterService implements CharacterServiceInterface
         return  $this->characterRepository->findAll();
     }
 
+    public function getAllByIntelligence($intelligence){
+        return $this->characterRepository->getAllByIntelligence($intelligence);
+    }
+
     public function modify(Character $character, string $data)
     {
         $this->submit($character, CharacterType::class, $data);

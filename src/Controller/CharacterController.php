@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Character;
 use App\Service\CharacterServiceInterface;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -278,5 +279,40 @@ class CharacterController extends AbstractController
     {
         $this->denyAccessUnlessGranted('characterIndex', null);
         return new JsonResponse($this->characterService->getImagesKind($kind, $number));
+    }
+
+    //DISPLAY
+    /**
+     * Displays the Character by intelligence
+     *
+     * ...
+     *
+     * @OA\Parameter(
+     *     name="level",
+     *     in="path",
+     *     description="level of intelligence of the Character",
+     *     required=true,
+     * )
+     * @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=Character::class)
+     * )
+     * @OA\Response(
+     *     response=403,
+     *     description="Access denied",
+     * )
+     * @OA\Response(
+     *     response=404,
+     *     description="Not Found",
+     * )
+     * @OA\Tag(name="Character")
+     */
+    #[Route('/character/intelligence/{level}', name: 'character_index_intelligence_gt_eq', methods: ['GET', 'HEAD'])]
+    public function gtEqIntelligence(Int $level): Response
+    {
+        $this->denyAccessUnlessGranted('characterIndex', null);
+        $characters = $this->characterService->getAllByIntelligence($level);
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
     }
 }

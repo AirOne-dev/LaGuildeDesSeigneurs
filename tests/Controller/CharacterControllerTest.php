@@ -137,4 +137,10 @@ class CharacterControllerTest extends WebTestCase
     {
         self::$identifier = $this->content['identifier'];
     }
+
+    public function testDisplayIntelligence(): void
+    {
+        $this->client->request('GET', '/character/intelligence/121');
+        $this->assertJsonResponse();
+    }
 }

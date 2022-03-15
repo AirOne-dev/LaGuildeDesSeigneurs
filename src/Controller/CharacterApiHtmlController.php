@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\CharacterApiHtmlType;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,8 @@ class CharacterApiHtmlController extends AbstractController
     #[Route('/', name: 'character_api_html_index', methods: ['GET'])]
     public function index(): Response
     {
-        $response = $this->client->request('GET','http://caddy/character');
+        // pour docker, on remplace 'localhost' par 'caddy' pour les requêtes internes au serveur
+        $response = $this->client->request('GET','http://caddy/character/index');
         return $this->render('character_api_html/index.html.twig', [
             'characters' => $response->toArray(),
         ]);
@@ -37,10 +39,8 @@ class CharacterApiHtmlController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $response = $this->client->request(
-                'POST',
-                'http://caddy/character/create',
-                ['json' => $request->request->all()['character_api_html'],]);
+            // pour docker, on remplace 'localhost' par 'caddy' pour les requêtes internes au serveur
+            $response = $this->client->request('POST','http://caddy/character/create',['json' => $request->request->all()['character_api_html'],]);
 
             return $this->redirectToRoute('character_api_html_show', array(
                 'identifier' => $response->toArray()['identifier'],
@@ -56,6 +56,7 @@ class CharacterApiHtmlController extends AbstractController
     #[Route('/{identifier}', name: 'character_api_html_show', methods: ['GET'])]
     public function show(string $identifier): Response
     {
+        // pour docker, on remplace 'localhost' par 'caddy' pour les requêtes internes au serveur
         $response = $this->client->request('GET','http://caddy/character/display/' . $identifier);
         return $this->render('character_api_html/show.html.twig', ['character' => $response->toArray(),]);
     }
@@ -63,6 +64,7 @@ class CharacterApiHtmlController extends AbstractController
     #[Route('/{identifier}/edit', name: 'character_api_html_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, string $identifier): Response
     {
+        // pour docker, on remplace 'localhost' par 'caddy' pour les requêtes internes au serveur
         $response = $this->client->request('GET','http://caddy/character/display/' . $identifier);
         $character = $response->toArray();
 
@@ -70,14 +72,8 @@ class CharacterApiHtmlController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->client->request(
-                'PUT',
-                'http://caddy/character/modify/' . $identifier,
-                [
-//                    'json' => $request->request->all()['character_api_html'],
-                    'body' => json_encode($request->request->all()['character_api_html'])
-                ]
-            );
+            // pour docker, on remplace 'localhost' par 'caddy' pour les requêtes internes au serveur
+            $this->client->request('PUT','http://caddy/character/modify/' . $identifier,['body' => json_encode($request->request->all()['character_api_html'])]);
 
             return $this->redirectToRoute('character_api_html_show', array(
                 'identifier' => $identifier,
@@ -94,9 +90,18 @@ class CharacterApiHtmlController extends AbstractController
     public function delete(Request $request, string $identifier): Response
     {
         if ($this->isCsrfTokenValid('delete'.$identifier, $request->request->get('_token'))) {
+            // pour docker, on remplace 'localhost' par 'caddy' pour les requêtes internes au serveur
             $this->client->request('DELETE','http://caddy/character/delete/' . $identifier);
         }
 
         return $this->redirectToRoute('character_api_html_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/intelligence/{level}', name: 'character_api_html_index_intel_lvl', methods: ['GET'])]
+    public function intelligence(Int $level): Response
+    {
+        // pour docker, on remplace 'localhost' par 'caddy' pour les requêtes internes au serveur
+        $response = $this->client->request('GET','http://caddy/character/intelligence/'.$level);
+        return $this->render('character_api_html/index.html.twig', ['characters' => $response->toArray(),]);
     }
 }
