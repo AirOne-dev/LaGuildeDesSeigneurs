@@ -82,4 +82,12 @@ class CharacterHtmlController extends AbstractController
 
         return $this->redirectToRoute('character_html_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/intelligence/{level}', name: 'character_html_intelligence', methods: ['GET'])]
+    public function intelligence(Int $level): Response
+    {
+        return $this->render('character_html/index.html.twig', [
+            'characters' => $this->characterService->getAllByIntelligence($level),
+        ]);
+    }
 }
