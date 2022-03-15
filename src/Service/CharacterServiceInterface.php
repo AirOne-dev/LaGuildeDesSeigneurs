@@ -34,4 +34,10 @@ interface CharacterServiceInterface
      */
     public function modifyFromHtml(Character $character);
 
+    /**
+     * @param $intelligence
+     * @return Array of Character
+     */
+    public function getAllByIntelligence($intelligence);
+
 }
