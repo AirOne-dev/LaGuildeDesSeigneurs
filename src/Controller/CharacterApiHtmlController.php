@@ -39,7 +39,7 @@ class CharacterApiHtmlController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $response = $this->client->request(
                 'POST',
-                'http://localhost/character/create',
+                'http://caddy/character/create',
                 ['json' => $request->request->all()['character_api_html'],]);
 
             return $this->redirectToRoute('character_api_html_show', array(
@@ -70,7 +70,14 @@ class CharacterApiHtmlController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->client->request('PUT','http://caddy/character/modify/' . $identifier,['json' => $request->request->all()['character_api_html'],'body' => json_encode($request->request->all()['character_api_html']),]);
+            $this->client->request(
+                'PUT',
+                'http://caddy/character/modify/' . $identifier,
+                [
+//                    'json' => $request->request->all()['character_api_html'],
+                    'body' => json_encode($request->request->all()['character_api_html'])
+                ]
+            );
 
             return $this->redirectToRoute('character_api_html_show', array(
                 'identifier' => $identifier,
