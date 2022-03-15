@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Character index{% endblock %}
+
+{% block body %}
+    <h1>Character index</h1>
+    {# Table headers #}
+    <table class="table table-hover">
+        <thead>
+        <tr class="text-center">
+            <th>Kind</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Caste</th>
+            <th>Knowledge</th>
+            <th>Life</th>
+            <th>Intelligence</th>
+            <th>Creation</th>
+            <th>Modification</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        {# Table contents #}
+        <tbody>
+        {% for character in characters %}
+            <tr class="text-center">
+                <td>
+                    {% if (character.kind == 'Dame') %}
+                        <strong>{{ character.kind }}</strong>
+                    {% else %}
+                        {{ character.kind }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('character_api_html_show', {'identifier': character.identifier}) }}">{{ character.name }}</a>
+                </td>
+                <td>{{ character.surname }}</td>
+                <td>{{ character.caste }}</td>
+                <td>{{ character.knowledge }}</td>
+                <td>{{ character.life }}</td>
+                <td>{{ character.intelligence }}</td>
+                <td>{{ character.creation ? character.creation|date('d/m/Y') : '' }}</td>
+                <td>{{ character.modification ? character.modification|date('d/m/Y') : '' }}</td>
+                <td>
+                    <a href="{{ path('character_api_html_edit', {'identifier': character.identifier}) }}">Modifier</a>
+                </td>
+            </tr>
+            {# No records found #}
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# New Character #}
+    <p class="text-center">
+        <a href="{{ path('character_api_html_new') }}" class="btn btn-primary">Nouveau Character</a>
+    </p>
+{% endblock %}
