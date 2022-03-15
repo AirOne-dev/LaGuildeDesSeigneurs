@@ -13,23 +13,24 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use App\Service\CharacterServiceInterface;
 
-/**
- * @Route("/character/api-html")
- */
+#[Route('/character/api-html')]
 class CharacterApiHtmlController extends AbstractController
 {
     private $characterService;
+    private $client;
 
-    public function __construct(CharacterServiceInterface $characterService)
+    public function __construct(CharacterServiceInterface $characterService, HttpClientInterface $client)
     {
         $this->characterService = $characterService;
+        $this->client = $client;
     }
 
     #[Route('/', name: 'character_api_html_index', methods: ['GET'])]
-    public function index(CharacterRepository $characterRepository): Response
+    public function index(): Response
     {
+        $response = $this->client->request('GET','http://caddy/character');
         return $this->render('character_api_html/index.html.twig', [
-            'characters' => $characterRepository->findAll(),
+            'characters' => $response->toArray(),
         ]);
     }
 
